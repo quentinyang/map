@@ -1,0 +1,51 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ea9be6c8b2006ff24b75ca49a0fa58ea"></script>
+    <style>
+        .map-container{
+            width: 80%;
+            margin: 0 auto;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map-container"></div>
+    <div id="result"></div>
+    <script src="map.js"></script>
+<script>
+
+var map = new Map();
+
+map.init({
+    id: 'map',
+    opts: {
+        center: [121.704998,31.186518]
+    }
+
+});
+//map.addMarker([121.492996, 31.209278]);
+//map.addMarker([121.704998, 31.186518]);
+map.addMarkers([
+    [121.704998,31.186518],
+    [121.708088,31.184904]
+]);
+
+map.searchNearBy({
+//    keyword: '医院',
+    type: '医院|交通|综合',
+    center: [121.704998,31.186518],
+    radius: 1500,
+    callback: function(status, results) {
+        console.log(results);
+    }
+});
+
+
+</script>
+</body>
+</html>
+
+

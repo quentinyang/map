@@ -1,0 +1,104 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ea9be6c8b2006ff24b75ca49a0fa58ea"></script>
+    <style>
+        .map-container{
+            width: 80%;
+            margin: 0 auto;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map-container"></div>
+<DIV id="result"></DIV>
+<script>
+
+    // init Map
+    var map = new AMap.Map('map', {
+        zoom: 12,
+        center: [121.492996,31.210452],
+        lang: 'zh_cn'
+//        isHotspot: true
+    });
+    //    map.setZoom(10);
+    //    map.setCenter([116.39,39.9]);
+
+
+    // add marker
+    var marker = new AMap.Marker({
+        position: [121.492996,31.210452],
+        map: map
+    });
+
+    var marker2 = new AMap.Marker({
+        position: [121.465874,31.209278],
+        map: map
+    });
+
+//    var marker = new AMap.Marker();
+//    marker.setMap(map);
+
+    var infowindow = new AMap.InfoWindow({
+        content: '<h3>高德地图</h1><div>高德是中国领先的数字地图内容、导航和位置服务解决方案提供商。</div>',
+        offset: new AMap.Pixel(0, -30),
+        size:new AMap.Size(230,0)
+    });
+
+    var clickHandle = AMap.event.addListener(marker, 'click', function(e) {
+        infowindow.open(map, e.target.getPosition())
+    });
+
+    AMap.plugin('AMap.AdvancedInfoWindow',function(){
+        var infowindow = new AMap.AdvancedInfoWindow({
+            content: '<h3 class="title">高德地图</h1>'+
+                    '<div class="content">高德是中国领先的数字地图内容、'+
+                    '导航和位置服务解决方案提供商。</div>',
+            offset: new AMap.Pixel(0, -30),
+            asOrigin:false
+        });
+        infowindow.open(map,new AMap.LngLat(121.492996,31.210452));
+    });
+
+    AMap.plugin(['AMap.ToolBar','AMap.Scale'],function(){
+        var toolBar = new AMap.ToolBar();
+        var scale = new AMap.Scale();
+        map.addControl(toolBar);
+        map.addControl(scale);
+    })
+
+
+    AMap.service('AMap.PlaceSearch',function() {//回调函数
+        //实例化PlaceSearch
+//        placeSearch= new AMap.PlaceSearch();
+        //TODO: 使用placeSearch对象调用关键字搜索的功能
+
+        var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+//            pageSize: 50,
+//            pageIndex: 1,
+            city: "021", //城市
+//            type:'休闲',
+            map: map,
+            panel: null
+        });
+        //关键字查询
+//        placeSearch.search('川沙', function(status, result) {
+//            console.log(status, result);
+//        });
+
+//        周边搜索
+        placeSearch.searchNearBy("足浴", [121.706092,31.187785], 1000, function(status, result) {
+            console.log(result);
+            if (status === 'complete' && result.info === 'OK') {
+
+                //TODO : 解析返回结果,如果设置了map和panel，api将帮助完成点标注和列表
+            }
+        });
+
+
+    });
+</script>
+</body>
+</html>
